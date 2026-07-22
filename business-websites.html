@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Websites | WEBFIXX STUDIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070d;--glass:rgba(255,255,255,0.045);--glass-strong:rgba(255,255,255,0.08);--border:rgba(255,255,255,0.09);--cyan:#4cc9f0;--violet:#9d4edd;--text:#f2f4f8;--muted:#8b93a7;--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;line-height:1.6;position:relative;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+.container{max-width:1100px;margin:0 auto;padding:0 24px;}
+::selection{background:var(--cyan);color:#000;}
+.bg-orb{position:fixed;border-radius:50%;filter:blur(130px);z-index:0;pointer-events:none;opacity:0.25;}
+.orb1{width:550px;height:550px;background:var(--violet);top:-180px;right:-180px;animation:drift1 12s ease-in-out infinite;}
+.orb2{width:600px;height:600px;background:var(--cyan);bottom:-200px;left:-180px;animation:drift2 14s ease-in-out infinite;}
+@keyframes drift1{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,40px);}}
+@keyframes drift2{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,-30px);}}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(5,7,13,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:0.3s ease;}
+.navbar.scrolled{padding:10px 24px;background:rgba(5,7,13,0.85);}
+.logo{font-family:var(--font-display);font-weight:700;font-size:20px;}
+.logo span{color:var(--cyan);}
+.nav-links{display:flex;align-items:center;gap:36px;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:0.25s ease;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{padding:10px 22px;border-radius:999px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#04050a;font-weight:600;font-size:14px;}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001;}
+.burger span{width:24px;height:2px;background:var(--text);transition:0.3s;}
+.mobile-menu{position:fixed;top:0;right:-100%;width:75%;max-width:320px;height:100vh;background:rgba(8,10,18,0.98);backdrop-filter:blur(20px);border-left:1px solid var(--border);padding:100px 32px;transition:right 0.4s ease;z-index:999;display:flex;flex-direction:column;gap:28px;}
+.mobile-menu.open{right:0;}
+.mobile-menu a{font-size:18px;font-family:var(--font-display);}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:13px;color:var(--muted);margin:130px 0 30px;position:relative;z-index:2;}
+.back-link:hover{color:var(--cyan);}
+.hero-3d{position:relative;z-index:2;padding-bottom:50px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;}
+.icon-orb{width:110px;height:110px;border-radius:28px;background:linear-gradient(135deg,var(--cyan),var(--violet));display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 0 60px rgba(76,201,240,0.5);animation:floatIcon 5s ease-in-out infinite;margin-bottom:24px;}
+@keyframes floatIcon{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-14px) rotate(6deg);}}
+.hero-3d h1{font-family:var(--font-display);font-size:clamp(30px,4.5vw,46px);font-weight:700;letter-spacing:-1px;margin-bottom:16px;}
+.hero-3d p{color:var(--muted);font-size:15.5px;max-width:480px;}
+.hero-visual-card{height:320px;border-radius:24px;background:var(--glass-strong);border:1px solid var(--border);backdrop-filter:blur(20px);box-shadow:0 40px 100px rgba(0,0,0,0.5);position:relative;overflow:hidden;transform-style:preserve-3d;animation:floatCard 6s ease-in-out infinite;display:flex;flex-direction:column;padding:20px;gap:10px;}
+@keyframes floatCard{0%,100%{transform:rotateX(4deg) rotateY(-6deg) translateY(0);}50%{transform:rotateX(-2deg) rotateY(4deg) translateY(-14px);}}
+.mini-page{flex:1;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+.section{padding:60px 0;position:relative;z-index:2;}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.section h2{font-family:var(--font-display);font-size:clamp(22px,3.2vw,30px);margin-bottom:30px;}
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.feature-card{padding:26px;border-radius:18px;background:var(--glass);border:1px solid var(--border);transition:0.3s ease;}
+.feature-card:hover{transform:translateY(-6px);border-color:rgba(76,201,240,0.4);}
+.feature-card h4{font-family:var(--font-display);font-size:16px;margin-bottom:8px;}
+.feature-card p{font-size:13.5px;color:var(--muted);}
+.page-list{display:flex;flex-wrap:wrap;gap:12px;}
+.page-chip{padding:10px 18px;border-radius:999px;background:var(--glass);border:1px solid var(--border);font-family:var(--font-mono);font-size:12.5px;color:var(--text);}
+.contact-cta{border-radius:24px;padding:60px 40px;text-align:center;background:linear-gradient(135deg,rgba(76,201,240,0.1),rgba(157,78,221,0.1));border:1px solid var(--border);margin-bottom:80px;}
+.contact-cta h2{font-family:var(--font-display);font-size:clamp(22px,3.2vw,32px);margin-bottom:14px;}
+.contact-cta p{color:var(--muted);margin-bottom:26px;}
+.cta-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+.btn-primary{padding:14px 28px;border-radius:999px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#04050a;font-weight:600;font-size:14px;}
+.btn-ghost{padding:14px 28px;border-radius:999px;border:1px solid var(--border);color:var(--text);font-weight:500;font-size:14px;background:var(--glass);}
+.footer{border-top:1px solid var(--border);padding:40px 0 30px;position:relative;z-index:2;text-align:center;color:var(--muted);font-size:12.5px;}
+.footer a{color:var(--cyan);}
+@media(max-width:900px){.hero-3d{grid-template-columns:1fr;}.feature-grid{grid-template-columns:1fr;}}
+@media(max-width:640px){.container{padding:0 28px;}.nav-links{display:none;}.burger{display:flex;}.hero-visual-card{height:220px;}.contact-cta{padding:40px 26px;}}
+</style>
+</head>
+<body>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="logo">WEBFIXX<span>.</span>STUDIO</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li>
+    <li><a href="get-a-quote.html" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="get-a-quote.html" class="nav-cta">Get a Quote</a>
+</div>
+<div class="container">
+  <a href="services.html" class="back-link">← Back to Services</a>
+  <section class="hero-3d">
+    <div>
+      <div class="icon-orb">🏢</div>
+      <h1>Business Websites</h1>
+      <p>Professional, multi-page websites that represent your brand with credibility and give clients confidence to work with you.</p>
+    </div>
+    <div class="hero-visual-card">
+      <div class="mini-page">Home</div>
+      <div class="mini-page">About</div>
+      <div class="mini-page">Contact</div>
+    </div>
+  </section>
+  <section class="section reveal">
+    <h2>What's included</h2>
+    <div class="feature-grid">
+      <div class="feature-card"><h4>Multi-Page Structure</h4><p>Home, About, Services, Contact and more, all connected.</p></div>
+      <div class="feature-card"><h4>Brand Identity</h4><p>Design that reflects your business's tone and professionalism.</p></div>
+      <div class="feature-card"><h4>Contact Integration</h4><p>Forms, WhatsApp and email set up for easy client outreach.</p></div>
+      <div class="feature-card"><h4>Mobile Ready</h4><p>Fully responsive across all screen sizes.</p></div>
+    </div>
+  </section>
+  <section class="section reveal">
+    <h2>Typical pages included</h2>
+    <div class="page-list">
+      <span class="page-chip">Home</span><span class="page-chip">About</span><span class="page-chip">Services</span><span class="page-chip">Portfolio</span><span class="page-chip">Contact</span>
+    </div>
+  </section>
+  <div class="contact-cta reveal">
+    <h2>Need a professional business website?</h2>
+    <p>Let's build something that represents your business well.</p>
+    <div class="cta-btns">
+      <a href="get-a-quote.html" class="btn-primary">Get a Quote</a>
+      <a href="portfolio.html" class="btn-ghost">See Our Work</a>
+    </div>
+  </div>
+</div>
+<footer class="footer">© 2026 WebFixx Studio. All rights reserved. — <a href="index.html">webfixxstudio.com</a></footer>
+<script>
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>40));
+const burger=document.getElementById('burger');const mobileMenu=document.getElementById('mobileMenu');
+burger.addEventListener('click',()=>mobileMenu.classList.toggle('open'));
+document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.remove('open')));
+const revealEls=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in');observer.unobserve(entry.target);}});},{threshold:0.15});
+revealEls.forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

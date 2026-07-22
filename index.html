@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEBFIXX STUDIO | Web Development Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05070d;--bg-alt:#0a0e18;--glass:rgba(255,255,255,0.045);--glass-strong:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.09);--cyan:#4cc9f0;--violet:#9d4edd;--text:#f2f4f8;--muted:#8b93a7;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;line-height:1.6;position:relative;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+img{max-width:100%;display:block;}
+.container{max-width:1200px;margin:0 auto;padding:0 24px;}
+::selection{background:var(--cyan);color:#000;}
+
+.page-bg{position:absolute;top:0;left:0;right:0;height:1400px;z-index:0;pointer-events:none;
+  background-image:linear-gradient(180deg, rgba(5,7,13,0.35) 0%, rgba(5,7,13,0.75) 55%, var(--bg) 100%),
+  url('bg-tech.jpg');
+  background-size:cover;background-position:center top;opacity:0.55;}
+
+.bg-orb{position:fixed;border-radius:50%;filter:blur(120px);z-index:0;pointer-events:none;opacity:0.12;}
+.orb1{width:500px;height:500px;background:var(--cyan);top:-150px;left:-150px;}
+.orb2{width:600px;height:600px;background:var(--violet);bottom:-200px;right:-150px;}
+
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(5,7,13,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:padding 0.3s ease, background 0.3s ease;}
+.navbar.scrolled{padding:10px 24px;background:rgba(5,7,13,0.85);}
+.logo{font-family:var(--font-display);font-weight:700;font-size:20px;letter-spacing:0.5px;}
+.logo span{color:var(--cyan);}
+.nav-links{display:flex;align-items:center;gap:36px;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color 0.25s ease;}
+.nav-links a.active,.nav-links a:hover{color:var(--text);}
+.nav-cta{padding:10px 22px;border-radius:999px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#04050a;font-weight:600;font-size:14px;transition:transform 0.25s ease, box-shadow 0.25s ease;}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(76,201,240,0.35);}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001;}
+.burger span{width:24px;height:2px;background:var(--text);transition:0.3s;}
+.mobile-menu{position:fixed;top:0;right:-100%;width:75%;max-width:320px;height:100vh;background:rgba(8,10,18,0.98);backdrop-filter:blur(20px);border-left:1px solid var(--border);padding:100px 32px;transition:right 0.4s ease;z-index:999;display:flex;flex-direction:column;gap:28px;}
+.mobile-menu.open{right:0;}
+.mobile-menu a{font-size:18px;font-family:var(--font-display);}
+.mobile-menu .nav-cta{text-align:center;margin-top:12px;}
+
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;padding:140px 0 80px;}
+.hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;position:relative;z-index:2;}
+.eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;padding:6px 14px;border:1px solid var(--border);border-radius:999px;background:var(--glass);}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.hero h1{font-family:var(--font-display);font-size:clamp(32px,5.2vw,58px);font-weight:700;line-height:1.08;letter-spacing:-1px;margin-bottom:22px;}
+.hero h1 .grad{background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero p{font-size:16px;color:var(--muted);max-width:480px;margin-bottom:34px;}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-primary{padding:14px 28px;border-radius:999px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#04050a;font-weight:600;font-size:14px;transition:transform 0.25s ease, box-shadow 0.25s ease;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(76,201,240,0.35);}
+.btn-ghost{padding:14px 28px;border-radius:999px;border:1px solid var(--border);color:var(--text);font-weight:500;font-size:14px;background:var(--glass);transition:0.25s ease;}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+
+.hero-visual{position:relative;height:420px;display:flex;align-items:center;justify-content:center;}
+.browser-card{width:100%;max-width:420px;background:var(--glass-strong);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 30px 80px rgba(0,0,0,0.5);animation:float 6s ease-in-out infinite;overflow:hidden;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-16px);}}
+.browser-topbar{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid var(--border);}
+.browser-dot{width:9px;height:9px;border-radius:50%;}
+.dot-r{background:#ff5f57;}
+.dot-y{background:#febc2e;}
+.dot-g{background:#28c840;}
+.browser-url{margin-left:10px;font-family:var(--font-mono);font-size:11px;color:var(--muted);background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:6px;}
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;}
+.video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+.glow-orb-small{position:absolute;width:120px;height:120px;border-radius:50%;background:var(--violet);filter:blur(60px);opacity:0.35;top:-30px;right:20%;animation:pulse 4s ease-in-out infinite;z-index:-1;}
+@keyframes pulse{0%,100%{opacity:0.25;}50%{opacity:0.45;}}
+
+.section{padding:100px 0;position:relative;z-index:2;}
+.section-head{max-width:640px;margin-bottom:56px;}
+.section-eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;display:block;}
+.section-head h2{font-family:var(--font-display);font-size:clamp(26px,3.6vw,40px);font-weight:700;letter-spacing:-0.5px;margin-bottom:14px;}
+.section-head p{color:var(--muted);font-size:15.5px;}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+.trust-strip{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;}
+.trust-pill{padding:12px 22px;border:1px solid var(--border);border-radius:999px;background:var(--glass);font-size:13px;color:var(--muted);font-family:var(--font-mono);}
+
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.service-card{padding:32px 26px;border-radius:18px;background:var(--glass);border:1px solid var(--border);backdrop-filter:blur(12px);transition:transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;position:relative;overflow:hidden;}
+.service-card:hover{transform:translateY(-8px);border-color:rgba(76,201,240,0.4);box-shadow:0 20px 50px rgba(76,201,240,0.12);}
+.service-icon{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,rgba(76,201,240,0.2),rgba(157,78,221,0.2));display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:20px;}
+.service-card h3{font-family:var(--font-display);font-size:19px;margin-bottom:10px;}
+.service-card p{font-size:14px;color:var(--muted);margin-bottom:16px;}
+.service-link{font-size:13px;color:var(--cyan);font-weight:500;}
+
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.why-item{padding:26px 20px;border-radius:14px;background:var(--glass);border:1px solid var(--border);text-align:left;}
+.why-item .num{font-family:var(--font-mono);color:var(--violet);font-size:12px;margin-bottom:10px;display:block;}
+.why-item h4{font-family:var(--font-display);font-size:15.5px;margin-bottom:6px;}
+.why-item p{font-size:13px;color:var(--muted);}
+
+.process-track{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+.process-step{padding:24px 18px;border-radius:14px;background:var(--glass);border:1px solid var(--border);text-align:center;transition:0.3s ease;}
+.process-step:hover{border-color:var(--cyan);transform:translateY(-6px);}
+.process-step .step-num{font-family:var(--font-mono);font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:10px;display:block;}
+.process-step h4{font-size:14px;font-family:var(--font-display);}
+
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.portfolio-card{border-radius:18px;overflow:hidden;background:var(--glass);border:1px solid var(--border);transition:transform 0.35s ease;}
+.portfolio-card:hover{transform:translateY(-8px);}
+.portfolio-thumb{height:180px;background:linear-gradient(135deg,rgba(76,201,240,0.18),rgba(157,78,221,0.18));position:relative;display:flex;align-items:center;justify-content:center;}
+.tag-demo{position:absolute;top:12px;left:12px;font-family:var(--font-mono);font-size:10px;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,0.5);border:1px solid var(--border);color:var(--cyan);letter-spacing:1px;}
+.portfolio-info{padding:20px;}
+.portfolio-info .cat{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.portfolio-info h3{font-family:var(--font-display);font-size:17px;margin:8px 0 6px;}
+.portfolio-info p{font-size:13px;color:var(--muted);margin-bottom:12px;}
+
+.tech-grid{display:flex;flex-wrap:wrap;gap:14px;}
+.tech-badge{padding:10px 18px;border-radius:10px;background:var(--glass);border:1px solid var(--border);font-family:var(--font-mono);font-size:13px;color:var(--text);transition:0.25s ease;}
+.tech-badge:hover{border-color:var(--violet);color:var(--violet);}
+
+.faq-list{max-width:760px;}
+.faq-item{border:1px solid var(--border);border-radius:14px;margin-bottom:14px;background:var(--glass);overflow:hidden;}
+.faq-q{padding:20px 22px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:var(--font-display);font-size:15px;}
+.faq-q .icon{transition:transform 0.3s ease;color:var(--cyan);}
+.faq-item.open .icon{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;padding:0 22px;}
+.faq-item.open .faq-a{max-height:200px;padding-bottom:20px;}
+.faq-a p{color:var(--muted);font-size:14px;}
+
+.contact-cta{border-radius:24px;padding:60px 40px;text-align:center;background:linear-gradient(135deg,rgba(76,201,240,0.1),rgba(157,78,221,0.1));border:1px solid var(--border);position:relative;overflow:hidden;}
+.contact-cta h2{font-family:var(--font-display);font-size:clamp(24px,3.6vw,36px);margin-bottom:14px;}
+.contact-cta p{color:var(--muted);margin-bottom:30px;}
+.contact-btns{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+
+.footer{border-top:1px solid var(--border);padding:50px 0 30px;position:relative;z-index:2;}
+.footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;margin-bottom:36px;}
+.footer-logo{font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:10px;}
+.footer-col h5{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+.footer-col a{display:block;font-size:14px;color:var(--muted);margin-bottom:10px;transition:0.2s;}
+.footer-col a:hover{color:var(--cyan);}
+.footer-bottom{padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);flex-wrap:wrap;gap:10px;}
+
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-visual{height:auto;margin-top:20px;}
+  .services-grid{grid-template-columns:repeat(2,1fr);}
+  .why-grid{grid-template-columns:repeat(2,1fr);}
+  .process-track{grid-template-columns:repeat(3,1fr);}
+  .portfolio-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:640px){
+  .container{padding:0 28px;}
+  .nav-links{display:none;}
+  .burger{display:flex;}
+  .services-grid,.why-grid,.portfolio-grid{grid-template-columns:1fr;}
+  .process-track{grid-template-columns:repeat(2,1fr);}
+  .contact-cta{padding:40px 26px;}
+  .footer-top{flex-direction:column;}
+  .hero{padding:130px 0 60px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="logo">WEBFIXX<span>.</span>STUDIO</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="get-a-quote.html" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="get-a-quote.html" class="nav-cta">Get a Quote</a>
+</div>
+
+<section class="hero container">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">Web Development Studio</span>
+      <h1>We Build Digital Experiences That Make <span class="grad">Businesses Stand Out.</span></h1>
+      <p>WEBFIXX STUDIO designs and develops modern, responsive websites and landing pages that turn visitors into clients.</p>
+      <div class="hero-btns">
+        <a href="get-a-quote.html" class="btn-primary">Start Your Project</a>
+        <a href="portfolio.html" class="btn-ghost">Explore Our Work</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="glow-orb-small"></div>
+      <div class="browser-card">
+        <div class="browser-topbar">
+          <span class="browser-dot dot-r"></span>
+          <span class="browser-dot dot-y"></span>
+          <span class="browser-dot dot-g"></span>
+          <span class="browser-url" id="browserUrl">webfixxstudio.com</span>
+        </div>
+        <div class="video-wrap">
+          <iframe id="heroVideo" src="https://www.youtube.com/embed/aqz-KE-bpKQ?rel=0&modestbranding=1" title="WEBFIXX STUDIO showreel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section container reveal">
+  <div class="trust-strip">
+    <span class="trust-pill">Mobile-First Development</span>
+    <span class="trust-pill">Modern UI/UX</span>
+    <span class="trust-pill">Fast &amp; Optimized</span>
+    <span class="trust-pill">Custom Solutions</span>
+    <span class="trust-pill">Ongoing Support</span>
+  </div>
+</section>
+
+<section class="section container" id="services">
+  <div class="section-head reveal">
+    <span class="section-eyebrow">What We Do</span>
+    <h2>Services built for growth</h2>
+    <p>From a single landing page to a full business website, every build is custom-made around your goals.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal"><div class="service-icon">🌐</div><h3>Web Development</h3><p>Fast, responsive websites built with clean, modern code.</p><a href="web-development.html" class="service-link">Learn more →</a></div>
+    <div class="service-card reveal"><div class="service-icon">🏢</div><h3>Business Websites</h3><p>Professional websites that represent your brand with credibility.</p><a href="business-websites.html" class="service-link">Learn more →</a></div>
+    <div class="service-card reveal"><div class="service-icon">🚀</div><h3>Landing Pages</h3><p>High-converting pages built to turn visitors into leads.</p><a href="landing-pages.html" class="service-link">Learn more →</a></div>
+    <div class="service-card reveal"><div class="service-icon">🎨</div><h3>UI/UX Design</h3><p>Clean, modern interfaces designed around real user behaviour.</p><a href="ui-ux-design.html" class="service-link">Learn more →</a></div>
+    <div class="service-card reveal"><div class="service-icon">🔄</div><h3>Website Redesign</h3><p>Turning outdated websites into modern, high-performing ones.</p><a href="website-redesign.html" class="service-link">Learn more →</a></div>
+    <div class="service-card reveal"><div class="service-icon">⚙️</div><h3>Custom Solutions</h3><p>Tailored digital solutions built around your exact requirements.</p><a href="custom-solutions.html" class="service-link">Learn more →</a></div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head reveal"><span class="section-eyebrow">Why WebFixx Studio</span><h2>Why businesses choose us</h2></div>
+  <div class="why-grid">
+    <div class="why-item reveal"><span class="num">01</span><h4>Modern Design</h4><p>Every project follows current design standards.</p></div>
+    <div class="why-item reveal"><span class="num">02</span><h4>Mobile First</h4><p>Built for phones first, scaled up beautifully.</p></div>
+    <div class="why-item reveal"><span class="num">03</span><h4>Performance Focused</h4><p>Fast-loading, optimized code from the ground up.</p></div>
+    <div class="why-item reveal"><span class="num">04</span><h4>Client-Focused Process</h4><p>Clear communication at every step of the project.</p></div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head reveal"><span class="section-eyebrow">How We Work</span><h2>Our process</h2></div>
+  <div class="process-track">
+    <div class="process-step reveal"><span class="step-num">01</span><h4>Discuss</h4></div>
+    <div class="process-step reveal"><span class="step-num">02</span><h4>Plan</h4></div>
+    <div class="process-step reveal"><span class="step-num">03</span><h4>Design</h4></div>
+    <div class="process-step reveal"><span class="step-num">04</span><h4>Develop</h4></div>
+    <div class="process-step reveal"><span class="step-num">05</span><h4>Test</h4></div>
+    <div class="process-step reveal"><span class="step-num">06</span><h4>Launch</h4></div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head reveal"><span class="section-eyebrow">Our Work</span><h2>Featured projects</h2></div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card reveal"><div class="portfolio-thumb"><span class="tag-demo">Concept Project</span></div><div class="portfolio-info"><span class="cat">Business Website</span><h3>Studio Landing Concept</h3><p>A modern business homepage concept built to demonstrate our style.</p><a href="portfolio.html" class="service-link">View Project →</a></div></div>
+    <div class="portfolio-card reveal"><div class="portfolio-thumb"><span class="tag-demo">Concept Project</span></div><div class="portfolio-info"><span class="cat">Landing Page</span><h3>Product Launch Page</h3><p>A high-conversion landing page layout concept.</p><a href="portfolio.html" class="service-link">View Project →</a></div></div>
+    <div class="portfolio-card reveal"><div class="portfolio-thumb"><span class="tag-demo">Concept Project</span></div><div class="portfolio-info"><span class="cat">UI/UX</span><h3>Dashboard UI Concept</h3><p>A clean admin dashboard interface design concept.</p><a href="portfolio.html" class="service-link">View Project →</a></div></div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head reveal"><span class="section-eyebrow">Tech Stack</span><h2>Technologies we use</h2></div>
+  <div class="tech-grid reveal">
+    <span class="tech-badge">HTML5</span><span class="tech-badge">CSS3</span><span class="tech-badge">JavaScript</span>
+    <span class="tech-badge">React</span><span class="tech-badge">Next.js</span><span class="tech-badge">Node.js</span><span class="tech-badge">Supabase</span>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head reveal"><span class="section-eyebrow">FAQ</span><h2>Common questions</h2></div>
+  <div class="faq-list">
+    <div class="faq-item reveal"><div class="faq-q">Website banane mein kitna time lagta hai? <span class="icon">+</span></div><div class="faq-a"><p>Project ki complexity ke hisaab se, generally kuch dinon se lekar 2-3 weeks tak.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q">Website ki price kaise decide hoti hai? <span class="icon">+</span></div><div class="faq-a"><p>Pages, features aur design complexity ke hisaab se custom quote diya jaata hai.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q">Kya website mobile responsive hogi? <span class="icon">+</span></div><div class="faq-a"><p>Haan, har website mobile-first approach ke saath banayi jaati hai.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q">Kya domain aur hosting mein madad milegi? <span class="icon">+</span></div><div class="faq-a"><p>Haan, poori setup process mein guidance di jaati hai.</p></div></div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="contact-cta reveal">
+    <h2>Ready to start your project?</h2>
+    <p>Let's build something that makes your business stand out.</p>
+    <div class="contact-btns">
+      <a href="get-a-quote.html" class="btn-primary">Get a Quote</a>
+      <a href="https://wa.me/91XXXXXXXXXX" class="btn-ghost" target="_blank">WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer container">
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">WEBFIXX<span style="color:var(--cyan)">.</span>STUDIO</div>
+      <p style="color:var(--muted);font-size:13px;max-width:260px;">Web development studio building modern, high-performing websites.</p>
+    </div>
+    <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@webfixxstudio.com">hello@webfixxstudio.com</a><a href="https://wa.me/91XXXXXXXXXX" target="_blank">WhatsApp</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 WebFixx Studio. All rights reserved.</span><span>Built with WebFixx Studio</span></div>
+</footer>
+
+<script>
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.remove('open')));
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('in'); observer.unobserve(entry.target);} });
+},{threshold:0.15});
+revealEls.forEach(el=>observer.observe(el));
+document.querySelectorAll('.faq-q').forEach(q=>{ q.addEventListener('click',()=>{ q.parentElement.classList.toggle('open'); }); });
+</script>
+</body>
+</html>

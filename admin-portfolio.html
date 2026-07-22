@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio | WEBFIXX ADMIN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070d;--glass:rgba(255,255,255,0.045);--glass-strong:rgba(255,255,255,0.08);--border:rgba(255,255,255,0.09);--cyan:#4cc9f0;--violet:#9d4edd;--text:#f2f4f8;--muted:#8b93a7;--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;display:flex;}
+a{text-decoration:none;color:inherit;}
+.sidebar{width:220px;flex-shrink:0;background:rgba(255,255,255,0.03);border-right:1px solid var(--border);padding:24px 16px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;}
+.sidebar-logo{font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:30px;padding:0 8px;}
+.sidebar-logo span{color:var(--cyan);}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;font-size:13.5px;color:var(--muted);margin-bottom:4px;transition:0.2s;}
+.nav-item:hover{background:rgba(255,255,255,0.04);color:var(--text);}
+.nav-item.active{background:linear-gradient(135deg,rgba(76,201,240,0.15),rgba(157,78,221,0.15));color:var(--cyan);border:1px solid rgba(76,201,240,0.25);}
+.logout-btn{margin-top:20px;padding:12px 14px;border-radius:10px;font-size:13px;color:#ff8787;cursor:pointer;border:1px solid rgba(255,107,107,0.2);text-align:center;}
+.main{margin-left:220px;flex:1;padding:32px 36px;max-width:1000px;}
+.page-title{font-family:var(--font-display);font-size:24px;margin-bottom:4px;}
+.page-sub{color:var(--muted);font-size:13.5px;margin-bottom:20px;font-family:var(--font-mono);}
+.add-btn{padding:11px 22px;border-radius:999px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#04050a;font-weight:600;font-size:13.5px;margin-bottom:24px;}
+.project-item{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;}
+.project-item-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;cursor:pointer;}
+.thumb-preview{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(76,201,240,0.25),rgba(157,78,221,0.25));background-size:cover;background-position:center;flex-shrink:0;}
+.project-item-head h4{font-family:var(--font-display);font-size:15px;flex:1;}
+.chevron{color:var(--cyan);transition:0.3s;}
+.project-item.open .chevron{transform:rotate(90deg);}
+.project-body{display:none;}
+.project-item.open .project-body{display:block;}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-family:var(--font-mono);}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:11px 14px;border-radius:9px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text);font-size:13.5px;}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--cyan);}
+.form-hint{font-size:11px;color:var(--muted);margin-top:5px;}
+.btn-row{display:flex;gap:10px;margin-top:6px;}
+.save-btn{padding:10px 22px;border-radius:999px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#04050a;font-weight:600;font-size:13px;}
+.delete-btn{padding:10px 22px;border-radius:999px;border:1px solid rgba(255,107,107,0.3);cursor:pointer;background:transparent;color:#ff8787;font-weight:600;font-size:13px;}
+.saved-msg{font-size:12px;color:var(--cyan);margin-left:10px;display:none;}
+@media(max-width:800px){.sidebar{width:70px;padding:20px 8px;}.sidebar-logo{display:none;}.nav-item span.label{display:none;}.main{margin-left:70px;padding:24px 18px;}}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-logo">WEBFIXX<span>.</span>ADMIN</div>
+  <a href="admin-dashboard.html" class="nav-item">🏠 <span class="label">Dashboard</span></a>
+  <a href="admin-services.html" class="nav-item">🛠️ <span class="label">Services</span></a>
+  <a href="admin-portfolio.html" class="nav-item active">🖼️ <span class="label">Portfolio</span></a>
+  <a href="admin-messages.html" class="nav-item">✉️ <span class="label">Messages</span></a>
+  <a href="admin-settings.html" class="nav-item">⚙️ <span class="label">Settings</span></a>
+  <div class="logout-btn" id="logoutBtn">Log Out</div>
+</div>
+<div class="main">
+  <div class="page-title">Portfolio</div>
+  <div class="page-sub">Manage projects shown on the Portfolio page and project detail pages</div>
+  <button class="add-btn" id="addProjectBtn">+ Add New Project</button>
+  <div id="projectsList"></div>
+</div>
+<script>
+if (sessionStorage.getItem('wfx_admin_logged_in') !== 'true') { window.location.href = 'admin.html'; }
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('wfx_admin_logged_in');
+  window.location.href = 'admin.html';
+});
+
+const defaultProjects = [
+  {id:'studio-landing', title:'Studio Landing Concept', category:'Business Website', desc:'A modern business homepage concept built to demonstrate our style.', image:''},
+  {id:'product-launch', title:'Product Launch Page', category:'Landing Page', desc:'A high-conversion landing page layout concept.', image:''},
+  {id:'dashboard-ui', title:'Dashboard UI Concept', category:'UI/UX', desc:'A clean admin dashboard interface design concept.', image:''},
+  {id:'agency-portfolio', title:'Agency Portfolio Concept', category:'Business Website', desc:'A creative agency style homepage with bold typography.', image:''},
+  {id:'app-promo', title:'App Promo Page', category:'Landing Page', desc:'A mobile app landing page concept focused on downloads.', image:''},
+  {id:'ecommerce-ui', title:'E-commerce UI Concept', category:'UI/UX', desc:'A clean product listing and cart interface concept.', image:''}
+];
+
+function loadProjects() {
+  const saved = localStorage.getItem('wfx_projects');
+  return saved ? JSON.parse(saved) : defaultProjects;
+}
+function saveProjects(projects) {
+  localStorage.setItem('wfx_projects', JSON.stringify(projects));
+}
+
+function renderProjects() {
+  const projects = loadProjects();
+  const list = document.getElementById('projectsList');
+  list.innerHTML = '';
+  projects.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'project-item';
+    item.innerHTML = `
+      <div class="project-item-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="thumb-preview" style="background-image:url('${p.image}')"></div>
+        <h4>${p.title}</h4>
+        <span class="chevron">›</span>
+      </div>
+      <div class="project-body">
+        <div class="form-group"><label>Title</label><input type="text" id="ptitle-${i}" value="${p.title}"></div>
+        <div class="form-group"><label>Category</label><input type="text" id="pcat-${i}" value="${p.category}"></div>
+        <div class="form-group"><label>Description</label><textarea id="pdesc-${i}">${p.desc}</textarea></div>
+        <div class="form-group">
+          <label>Image URL</label>
+          <input type="text" id="pimg-${i}" value="${p.image}" placeholder="Paste image link here">
+          <p class="form-hint">Same image updates both the portfolio card and the project's detail page.</p>
+        </div>
+        <div class="btn-row">
+          <button class="save-btn" onclick="saveProject(${i})">Save</button>
+          <button class="delete-btn" onclick="deleteProject(${i})">Delete</button>
+        </div>
+        <span class="saved-msg" id="psaved-${i}">✓ Saved</span>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function saveProject(i) {
+  const projects = loadProjects();
+  projects[i].title = document.getElementById(`ptitle-${i}`).value;
+  projects[i].category = document.getElementById(`pcat-${i}`).value;
+  projects[i].desc = document.getElementById(`pdesc-${i}`).value;
+  projects[i].image = document.getElementById(`pimg-${i}`).value;
+  saveProjects(projects);
+  const msg = document.getElementById(`psaved-${i}`);
+  msg.style.display = 'inline';
+  setTimeout(() => { msg.style.display = 'none'; renderProjects(); }, 1200);
+}
+
+function deleteProject(i) {
+  if (!confirm('Delete this project?')) return;
+  const projects = loadProjects();
+  projects.splice(i, 1);
+  saveProjects(projects);
+  renderProjects();
+}
+
+document.getElementById('addProjectBtn').addEventListener('click', () => {
+  const projects = loadProjects();
+  projects.push({id:'new-project-'+Date.now(), title:'New Project', category:'Category', desc:'Project description', image:''});
+  saveProjects(projects);
+  renderProjects();
+});
+
+renderProjects();
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio | WEBFIXX STUDIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070d;--glass:rgba(255,255,255,0.045);--glass-strong:rgba(255,255,255,0.08);--border:rgba(255,255,255,0.09);--cyan:#4cc9f0;--violet:#9d4edd;--text:#f2f4f8;--muted:#8b93a7;--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;line-height:1.6;position:relative;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+.container{max-width:1200px;margin:0 auto;padding:0 24px;}
+::selection{background:var(--cyan);color:#000;}
+.page-bg{position:absolute;top:0;left:0;right:0;height:1400px;z-index:0;pointer-events:none;background-image:linear-gradient(180deg, rgba(5,7,13,0.35) 0%, rgba(5,7,13,0.75) 55%, var(--bg) 100%),url('bg-tech.jpg');background-size:cover;background-position:center top;opacity:0.55;}
+.bg-orb{position:fixed;border-radius:50%;filter:blur(120px);z-index:0;pointer-events:none;opacity:0.12;}
+.orb1{width:500px;height:500px;background:var(--cyan);top:-150px;left:-150px;}
+.orb2{width:600px;height:600px;background:var(--violet);bottom:-200px;right:-150px;}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(5,7,13,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:0.3s ease;}
+.navbar.scrolled{padding:10px 24px;background:rgba(5,7,13,0.85);}
+.logo{font-family:var(--font-display);font-weight:700;font-size:20px;}
+.logo span{color:var(--cyan);}
+.nav-links{display:flex;align-items:center;gap:36px;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:0.25s ease;}
+.nav-links a.active,.nav-links a:hover{color:var(--text);}
+.nav-cta{padding:10px 22px;border-radius:999px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#04050a;font-weight:600;font-size:14px;transition:0.25s ease;}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(76,201,240,0.35);}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001;}
+.burger span{width:24px;height:2px;background:var(--text);transition:0.3s;}
+.mobile-menu{position:fixed;top:0;right:-100%;width:75%;max-width:320px;height:100vh;background:rgba(8,10,18,0.98);backdrop-filter:blur(20px);border-left:1px solid var(--border);padding:100px 32px;transition:right 0.4s ease;z-index:999;display:flex;flex-direction:column;gap:28px;}
+.mobile-menu.open{right:0;}
+.mobile-menu a{font-size:18px;font-family:var(--font-display);}
+.page-hero{padding:150px 0 50px;text-align:center;position:relative;z-index:2;}
+.eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;padding:6px 14px;border:1px solid var(--border);border-radius:999px;background:var(--glass);}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.page-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,50px);font-weight:700;letter-spacing:-1px;margin-bottom:16px;}
+.page-hero h1 .grad{background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.page-hero p{color:var(--muted);max-width:560px;margin:0 auto;font-size:15.5px;}
+.section{padding:60px 0 100px;position:relative;z-index:2;}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:50px;}
+.filter-btn{padding:10px 20px;border-radius:999px;border:1px solid var(--border);background:var(--glass);color:var(--muted);font-family:var(--font-mono);font-size:12.5px;cursor:pointer;transition:0.25s ease;}
+.filter-btn.active,.filter-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;perspective:1200px;}
+.portfolio-card{border-radius:20px;overflow:hidden;background:var(--glass-strong);border:1px solid var(--border);transform-style:preserve-3d;transition:transform 0.4s ease, box-shadow 0.4s ease;cursor:pointer;}
+.portfolio-card:hover{transform:translateY(-10px) rotateX(4deg) rotateY(-4deg);box-shadow:0 30px 60px rgba(76,201,240,0.15);}
+.portfolio-thumb{height:200px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.portfolio-thumb::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,0.15),transparent 60%);}
+.thumb-1{background:linear-gradient(135deg,#1a3a5c,#3d1a5c);}
+.thumb-2{background:linear-gradient(135deg,#1a5c4a,#1a3a5c);}
+.thumb-3{background:linear-gradient(135deg,#5c1a3a,#3d1a5c);}
+.thumb-4{background:linear-gradient(135deg,#3d5c1a,#1a5c4a);}
+.thumb-5{background:linear-gradient(135deg,#5c3a1a,#5c1a3a);}
+.thumb-6{background:linear-gradient(135deg,#1a3a5c,#1a5c4a);}
+.tag-demo{position:absolute;top:14px;left:14px;font-family:var(--font-mono);font-size:10px;padding:5px 12px;border-radius:999px;background:rgba(0,0,0,0.55);border:1px solid var(--border);color:var(--cyan);letter-spacing:1px;z-index:2;}
+.portfolio-info{padding:22px;}
+.portfolio-info .cat{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.portfolio-info h3{font-family:var(--font-display);font-size:18px;margin:8px 0 6px;}
+.portfolio-info p{font-size:13.5px;color:var(--muted);margin-bottom:14px;}
+.view-link{font-size:13px;color:var(--cyan);font-weight:500;}
+.contact-cta{border-radius:24px;padding:60px 40px;text-align:center;background:linear-gradient(135deg,rgba(76,201,240,0.1),rgba(157,78,221,0.1));border:1px solid var(--border);margin-top:20px;}
+.contact-cta h2{font-family:var(--font-display);font-size:clamp(24px,3.6vw,36px);margin-bottom:14px;}
+.contact-cta p{color:var(--muted);margin-bottom:30px;}
+.contact-btns{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+.btn-primary{padding:14px 28px;border-radius:999px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#04050a;font-weight:600;font-size:14px;transition:0.25s ease;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(76,201,240,0.35);}
+.btn-ghost{padding:14px 28px;border-radius:999px;border:1px solid var(--border);color:var(--text);font-weight:500;font-size:14px;background:var(--glass);transition:0.25s ease;}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+.footer{border-top:1px solid var(--border);padding:50px 0 30px;position:relative;z-index:2;}
+.footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;margin-bottom:36px;}
+.footer-logo{font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:10px;}
+.footer-col h5{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+.footer-col a{display:block;font-size:14px;color:var(--muted);margin-bottom:10px;transition:0.2s;}
+.footer-col a:hover{color:var(--cyan);}
+.footer-bottom{padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);flex-wrap:wrap;gap:10px;}
+@media(max-width:900px){.portfolio-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.container{padding:0 28px;}.nav-links{display:none;}.burger{display:flex;}.portfolio-grid{grid-template-columns:1fr;}.contact-cta{padding:40px 26px;}.footer-top{flex-direction:column;}}
+</style>
+</head>
+<body>
+<div class="page-bg"></div>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="logo">WEBFIXX<span>.</span>STUDIO</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html" class="active">Portfolio</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li>
+    <li><a href="get-a-quote.html" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="get-a-quote.html" class="nav-cta">Get a Quote</a>
+</div>
+<section class="page-hero container">
+  <span class="eyebrow">Our Work</span>
+  <h1>Projects that <span class="grad">speak for themselves.</span></h1>
+  <p>A collection of concept and client builds showing our range across business sites, landing pages and interfaces.</p>
+</section>
+<section class="section container">
+  <div class="filter-bar reveal">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="business">Business Website</button>
+    <button class="filter-btn" data-filter="landing">Landing Page</button>
+    <button class="filter-btn" data-filter="uiux">UI/UX</button>
+  </div>
+  <div class="portfolio-grid" id="portfolioGrid">
+    <div class="portfolio-card reveal" data-cat="business">
+      <div class="portfolio-thumb thumb-1"><span class="tag-demo">Concept Project</span></div>
+      <div class="portfolio-info"><span class="cat">Business Website</span><h3>Studio Landing Concept</h3><p>A modern business homepage concept built to demonstrate our style.</p><a href="#" class="view-link">View Project →</a></div>
+    </div>
+    <div class="portfolio-card reveal" data-cat="landing">
+      <div class="portfolio-thumb thumb-2"><span class="tag-demo">Concept Project</span></div>
+      <div class="portfolio-info"><span class="cat">Landing Page</span><h3>Product Launch Page</h3><p>A high-conversion landing page layout concept.</p><a href="#" class="view-link">View Project →</a></div>
+    </div>
+    <div class="portfolio-card reveal" data-cat="uiux">
+      <div class="portfolio-thumb thumb-3"><span class="tag-demo">Concept Project</span></div>
+      <div class="portfolio-info"><span class="cat">UI/UX</span><h3>Dashboard UI Concept</h3><p>A clean admin dashboard interface design concept.</p><a href="#" class="view-link">View Project →</a></div>
+    </div>
+    <div class="portfolio-card reveal" data-cat="business">
+      <div class="portfolio-thumb thumb-4"><span class="tag-demo">Concept Project</span></div>
+      <div class="portfolio-info"><span class="cat">Business Website</span><h3>Agency Portfolio Concept</h3><p>A creative agency style homepage with bold typography.</p><a href="#" class="view-link">View Project →</a></div>
+    </div>
+    <div class="portfolio-card reveal" data-cat="landing">
+      <div class="portfolio-thumb thumb-5"><span class="tag-demo">Concept Project</span></div>
+      <div class="portfolio-info"><span class="cat">Landing Page</span><h3>App Promo Page</h3><p>A mobile app landing page concept focused on downloads.</p><a href="#" class="view-link">View Project →</a></div>
+    </div>
+    <div class="portfolio-card reveal" data-cat="uiux">
+      <div class="portfolio-thumb thumb-6"><span class="tag-demo">Concept Project</span></div>
+      <div class="portfolio-info"><span class="cat">UI/UX</span><h3>E-commerce UI Concept</h3><p>A clean product listing and cart interface concept.</p><a href="#" class="view-link">View Project →</a></div>
+    </div>
+  </div>
+  <div class="contact-cta reveal">
+    <h2>Like what you see?</h2>
+    <p>Let's build something just as good for your business.</p>
+    <div class="contact-btns">
+      <a href="get-a-quote.html" class="btn-primary">Get a Quote</a>
+      <a href="https://wa.me/91XXXXXXXXXX" class="btn-ghost" target="_blank">WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+<footer class="footer container">
+  <div class="footer-top">
+    <div><div class="footer-logo">WEBFIXX<span style="color:var(--cyan)">.</span>STUDIO</div><p style="color:var(--muted);font-size:13px;max-width:260px;">Web development studio building modern, high-performing websites.</p></div>
+    <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@webfixxstudio.com">hello@webfixxstudio.com</a><a href="https://wa.me/91XXXXXXXXXX" target="_blank">WhatsApp</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 WebFixx Studio. All rights reserved.</span><span>Built with WebFixx Studio</span></div>
+</footer>
+<script>
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>40));
+const burger=document.getElementById('burger');const mobileMenu=document.getElementById('mobileMenu');
+burger.addEventListener('click',()=>mobileMenu.classList.toggle('open'));
+document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.remove('open')));
+const revealEls=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in');observer.unobserve(entry.target);}});},{threshold:0.15});
+revealEls.forEach(el=>observer.observe(el));
+const filterBtns=document.querySelectorAll('.filter-btn');
+const cards=document.querySelectorAll('.portfolio-card');
+filterBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    filterBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter=btn.dataset.filter;
+    cards.forEach(card=>{ card.style.display=(filter==='all'||card.dataset.cat===filter)?'':'none'; });
+  });
+});
+cards.forEach(card=>{
+  card.addEventListener('mousemove',(e)=>{
+    const rect=card.getBoundingClientRect();
+    const x=(e.clientX-rect.left)/rect.width-0.5;
+    const y=(e.clientY-rect.top)/rect.height-0.5;
+    card.style.transform=`translateY(-10px) rotateX(${y*-8}deg) rotateY(${x*8}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
+});
+</script>
+</body>
+</html>

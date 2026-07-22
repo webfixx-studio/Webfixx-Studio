@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | WEBFIXX ADMIN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070d;--glass:rgba(255,255,255,0.045);--glass-strong:rgba(255,255,255,0.08);--border:rgba(255,255,255,0.09);--cyan:#4cc9f0;--violet:#9d4edd;--text:#f2f4f8;--muted:#8b93a7;--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;display:flex;}
+a{text-decoration:none;color:inherit;}
+.sidebar{width:220px;flex-shrink:0;background:rgba(255,255,255,0.03);border-right:1px solid var(--border);padding:24px 16px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;}
+.sidebar-logo{font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:30px;padding:0 8px;}
+.sidebar-logo span{color:var(--cyan);}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;font-size:13.5px;color:var(--muted);margin-bottom:4px;transition:0.2s;}
+.nav-item:hover{background:rgba(255,255,255,0.04);color:var(--text);}
+.nav-item.active{background:linear-gradient(135deg,rgba(76,201,240,0.15),rgba(157,78,221,0.15));color:var(--cyan);border:1px solid rgba(76,201,240,0.25);}
+.logout-btn{margin-top:20px;padding:12px 14px;border-radius:10px;font-size:13px;color:#ff8787;cursor:pointer;border:1px solid rgba(255,107,107,0.2);text-align:center;}
+.main{margin-left:220px;flex:1;padding:32px 36px;max-width:1000px;}
+.page-title{font-family:var(--font-display);font-size:24px;margin-bottom:4px;}
+.page-sub{color:var(--muted);font-size:13.5px;margin-bottom:30px;font-family:var(--font-mono);}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
+.stat-card{padding:20px;border-radius:14px;background:var(--glass);border:1px solid var(--border);}
+.stat-card .num{font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--cyan);}
+.stat-card .lbl{font-size:12px;color:var(--muted);margin-top:4px;}
+.panel{background:var(--glass);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:24px;}
+.panel h3{font-family:var(--font-display);font-size:16px;margin-bottom:18px;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:8px;font-family:var(--font-mono);}
+.form-group input,.form-group textarea{width:100%;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text);font-size:14px;}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--cyan);}
+.form-hint{font-size:11.5px;color:var(--muted);margin-top:6px;}
+.save-btn{padding:12px 26px;border-radius:999px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#04050a;font-weight:600;font-size:13.5px;}
+.saved-msg{font-size:12.5px;color:var(--cyan);margin-left:12px;display:none;}
+@media(max-width:800px){.sidebar{width:70px;padding:20px 8px;}.sidebar-logo{display:none;}.nav-item span.label{display:none;}.main{margin-left:70px;padding:24px 18px;}.stats-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-logo">WEBFIXX<span>.</span>ADMIN</div>
+  <a href="admin-dashboard.html" class="nav-item active">🏠 <span class="label">Dashboard</span></a>
+  <a href="admin-services.html" class="nav-item">🛠️ <span class="label">Services</span></a>
+  <a href="admin-portfolio.html" class="nav-item">🖼️ <span class="label">Portfolio</span></a>
+  <a href="admin-messages.html" class="nav-item">✉️ <span class="label">Messages</span></a>
+  <a href="admin-settings.html" class="nav-item">⚙️ <span class="label">Settings</span></a>
+  <div class="logout-btn" id="logoutBtn">Log Out</div>
+</div>
+<div class="main">
+  <div class="page-title">Dashboard</div>
+  <div class="page-sub">WEBFIXX STUDIO — control panel</div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="num" id="msgCount">0</div><div class="lbl">New Messages</div></div>
+    <div class="stat-card"><div class="num" id="projCount">6</div><div class="lbl">Portfolio Projects</div></div>
+    <div class="stat-card"><div class="num">6</div><div class="lbl">Active Services</div></div>
+  </div>
+  <div class="panel">
+    <h3>Home Page — Hero Video</h3>
+    <div class="form-group">
+      <label>YouTube Video Link</label>
+      <input type="text" id="videoLink" placeholder="https://www.youtube.com/watch?v=...">
+      <p class="form-hint">Paste any YouTube link — the video ID is extracted automatically.</p>
+    </div>
+    <div class="form-group">
+      <label>Browser Mockup URL Text</label>
+      <input type="text" id="browserUrlText" placeholder="webfixxstudio.com">
+    </div>
+    <button class="save-btn" id="saveHero">Save Changes</button>
+    <span class="saved-msg" id="heroSaved">✓ Saved</span>
+  </div>
+  <div class="panel">
+    <h3>Global Contact Info</h3>
+    <p class="form-hint" style="margin-bottom:16px;">Updates here apply across the entire site (footer, contact page, WhatsApp buttons).</p>
+    <div class="form-group"><label>Email Address</label><input type="email" id="contactEmail" placeholder="hello@webfixxstudio.com"></div>
+    <div class="form-group"><label>WhatsApp Number</label><input type="text" id="contactWhatsapp" placeholder="+91XXXXXXXXXX"></div>
+    <button class="save-btn" id="saveContact">Save Changes</button>
+    <span class="saved-msg" id="contactSaved">✓ Saved</span>
+  </div>
+</div>
+<script>
+if (sessionStorage.getItem('wfx_admin_logged_in') !== 'true') {
+  window.location.href = 'admin.html';
+}
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('wfx_admin_logged_in');
+  window.location.href = 'admin.html';
+});
+function loadData(key, fallback) { return localStorage.getItem(key) || fallback; }
+document.getElementById('videoLink').value = loadData('wfx_hero_video', '');
+document.getElementById('browserUrlText').value = loadData('wfx_browser_url', 'webfixxstudio.com');
+document.getElementById('contactEmail').value = loadData('wfx_contact_email', 'hello@webfixxstudio.com');
+document.getElementById('contactWhatsapp').value = loadData('wfx_contact_whatsapp', '');
+function extractYouTubeId(url) {
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
+document.getElementById('saveHero').addEventListener('click', () => {
+  const link = document.getElementById('videoLink').value;
+  const videoId = extractYouTubeId(link);
+  localStorage.setItem('wfx_hero_video', link);
+  if (videoId) localStorage.setItem('wfx_hero_video_id', videoId);
+  localStorage.setItem('wfx_browser_url', document.getElementById('browserUrlText').value);
+  const msg = document.getElementById('heroSaved');
+  msg.style.display = 'inline';
+  setTimeout(() => msg.style.display = 'none', 2000);
+});
+document.getElementById('saveContact').addEventListener('click', () => {
+  localStorage.setItem('wfx_contact_email', document.getElementById('contactEmail').value);
+  localStorage.setItem('wfx_contact_whatsapp', document.getElementById('contactWhatsapp').value);
+  const msg = document.getElementById('contactSaved');
+  msg.style.display = 'inline';
+  setTimeout(() => msg.style.display = 'none', 2000);
+});
+document.getElementById('msgCount').textContent = JSON.parse(localStorage.getItem('wfx_messages') || '[]').length;
+</script>
+</body>
+</html>
