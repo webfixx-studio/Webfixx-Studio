@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages | WEBFIXX ADMIN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<style>
+:root{--bg:#05070d;--glass:rgba(255,255,255,0.045);--glass-strong:rgba(255,255,255,0.08);--border:rgba(255,255,255,0.09);--cyan:#4cc9f0;--violet:#9d4edd;--text:#f2f4f8;--muted:#8b93a7;--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;display:flex;}
+a{text-decoration:none;color:inherit;}
+.sidebar{width:220px;flex-shrink:0;background:rgba(255,255,255,0.03);border-right:1px solid var(--border);padding:24px 16px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;}
+.sidebar-logo{font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:30px;padding:0 8px;}
+.sidebar-logo span{color:var(--cyan);}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;font-size:13.5px;color:var(--muted);margin-bottom:4px;transition:0.2s;}
+.nav-item:hover{background:rgba(255,255,255,0.04);color:var(--text);}
+.nav-item.active{background:linear-gradient(135deg,rgba(76,201,240,0.15),rgba(157,78,221,0.15));color:var(--cyan);border:1px solid rgba(76,201,240,0.25);}
+.logout-btn{margin-top:20px;padding:12px 14px;border-radius:10px;font-size:13px;color:#ff8787;cursor:pointer;border:1px solid rgba(255,107,107,0.2);text-align:center;}
+.main{margin-left:220px;flex:1;padding:32px 36px;max-width:1000px;}
+.page-title{font-family:var(--font-display);font-size:24px;margin-bottom:4px;}
+.page-sub{color:var(--muted);font-size:13.5px;margin-bottom:26px;font-family:var(--font-mono);}
+.loading{color:var(--muted);font-size:13px;text-align:center;padding:40px;}
+.empty-state{padding:60px 20px;text-align:center;color:var(--muted);background:var(--glass);border:1px solid var(--border);border-radius:16px;}
+.msg-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:14px;}
+.msg-card.unread{border-color:rgba(76,201,240,0.35);}
+.msg-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
+.msg-name{font-family:var(--font-display);font-size:16px;display:flex;align-items:center;gap:8px;}
+.unread-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.msg-date{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.msg-meta{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+.msg-tag{font-family:var(--font-mono);font-size:11.5px;padding:5px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text);}
+.msg-body{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.msg-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.msg-actions a, .msg-actions button{padding:8px 16px;border-radius:999px;font-size:12.5px;border:1px solid var(--border);background:transparent;color:var(--cyan);cursor:pointer;}
+.delete-btn{color:#ff8787 !important;border-color:rgba(255,107,107,0.25) !important;}
+@media(max-width:800px){.sidebar{width:70px;padding:20px 8px;}.sidebar-logo{display:none;}.nav-item span.label{display:none;}.main{margin-left:70px;padding:24px 18px;}}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-logo">WEBFIXX<span>.</span>ADMIN</div>
+  <a href="admin-dashboard.html" class="nav-item">🏠 <span class="label">Dashboard</span></a>
+  <a href="admin-services.html" class="nav-item">🛠️ <span class="label">Services</span></a>
+  <a href="admin-portfolio.html" class="nav-item">🖼️ <span class="label">Portfolio</span></a>
+  <a href="admin-messages.html" class="nav-item active">✉️ <span class="label">Messages</span></a>
+  <a href="admin-settings.html" class="nav-item">⚙️ <span class="label">Settings</span></a>
+  <div class="logout-btn" id="logoutBtn">Log Out</div>
+</div>
+<div class="main">
+  <div class="page-title">Messages</div>
+  <div class="page-sub">Enquiries submitted via Contact and Get a Quote forms</div>
+  <div id="messagesList"><div class="loading">Loading...</div></div>
+</div>
+<script>
+async function checkAuth() {
+  const { data } = await supabaseClient.auth.getSession();
+  if (!data.session) window.location.href = 'admin.html';
+}
+checkAuth();
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await supabaseClient.auth.signOut();
+  window.location.href = 'admin.html';
+});
+
+async function loadMessages() {
+  const { data, error } = await supabaseClient.from('messages').select('*').order('created_at', { ascending: false });
+  if (error) { console.error(error); return []; }
+  return data || [];
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) + ' · ' + d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+}
+
+async function renderMessages() {
+  const messages = await loadMessages();
+  const list = document.getElementById('messagesList');
+  if (messages.length === 0) {
+    list.innerHTML = `<div class="empty-state">No messages yet. Submissions from the Contact and Get a Quote forms will appear here.</div>`;
+    return;
+  }
+  list.innerHTML = '';
+  messages.forEach((m) => {
+    const card = document.createElement('div');
+    card.className = 'msg-card' + (m.is_read ? '' : ' unread');
+    card.innerHTML = `
+      <div class="msg-top">
+        <div class="msg-name">${!m.is_read ? '<span class="unread-dot"></span>' : ''}${m.name || 'Unnamed'}</div>
+        <div class="msg-date">${formatDate(m.created_at)}</div>
+      </div>
+      <div class="msg-meta">
+        ${m.email ? `<span class="msg-tag">${m.email}</span>` : ''}
+        ${m.phone ? `<span class="msg-tag">${m.phone}</span>` : ''}
+        ${m.service ? `<span class="msg-tag">${m.service}</span>` : ''}
+        ${m.source ? `<span class="msg-tag">Source: ${m.source}</span>` : ''}
+      </div>
+      <div class="msg-body">${m.message || ''}</div>
+      <div class="msg-actions">
+        ${m.phone ? `<a href="https://wa.me/${m.phone.replace(/[^0-9]/g,'')}" target="_blank">Reply on WhatsApp</a>` : ''}
+        ${m.email ? `<a href="mailto:${m.email}">Reply via Email</a>` : ''}
+        ${!m.is_read ? `<button onclick="markRead('${m.id}')">Mark as Read</button>` : ''}
+        <button class="delete-btn" onclick="deleteMessage('${m.id}')">Delete</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+async function markRead(id) {
+  await supabaseClient.from('messages').update({ is_read: true }).eq('id', id);
+  renderMessages();
+}
+
+async function deleteMessage(id) {
+  if (!confirm('Delete this message?')) return;
+  await supabaseClient.from('messages').delete().eq('id', id);
+  renderMessages();
+}
+
+renderMessages();
+</script>
+</body>
+</html>
